@@ -1,26 +1,32 @@
-// import { db } from "@vercel/postgres";
+import { invoices, customers, revenue, users } from '../lib/placeholder-data';
+import type { NextRequest } from 'next/server'
 
-// const client = await db.connect();
+import { db } from "@vercel/postgres";
 
-// async function listInvoices() {
-// 	const data = await client.sql`
-//     SELECT invoices.amount, customers.name
-//     FROM invoices
-//     JOIN customers ON invoices.customer_id = customers.id
-//     WHERE invoices.amount = 666;
-//   `;
+const client = await db.connect();
 
-// 	return data.rows;
-// }
+async function listInvoices() {
+	const data = await client.sql`
+    SELECT invoices.amount, customers.name
+    FROM invoices
+    JOIN customers ON invoices.customer_id = customers.id
+    WHERE invoices.amount = 666;
+  `;
+
+	return data.rows;
+}
 
 export async function GET() {
-  return Response.json({
-    message:
-      'Uncomment this file and remove this line. You can delete this file when you are finished.',
-  });
-  // try {
-  // 	return Response.json(await listInvoices());
-  // } catch (error) {
-  // 	return Response.json({ error }, { status: 500 });
-  // }
+  console.log("GET");
+  // console.log(invoices);
+  // return Response.json(invoices, {status: 200});
+  // return Response.json({
+  //   message:
+  //     'Uncomment this file and remove this line. You can delete this file when you are finished.',
+  // });
+  try {
+  	return Response.json(await listInvoices());
+  } catch (error) {
+  	return Response.json({ error }, { status: 500 });
+  }
 }
